@@ -1,0 +1,77 @@
+<div nxLayout="grid" class="app-container">
+    <div nxRow nxRowJustify="center" class="nx-margin-y-3m">
+      <h1 nxHeadline="page-bold-caps">Art Collection</h1>
+    </div>
+  
+    <form [formGroup]="formGroup" *ngIf="artworkData[page]">
+      <div nxRow nxRowJustify="center">
+        <div nxCol="12,12,4">
+          <div nxRow class="nx-margin-bottom-2xs">
+            <div nxCol="12">
+              <h4 nxHeadline="subsection-xsmall" class="nx-font-weight-semibold">
+                Filter:
+              </h4>
+            </div>
+          </div>
+          <div nxRow class="nx-margin-bottom-s">
+            <div nxCol="12">
+              <nx-formfield nxLabel="Style">
+                <nx-dropdown formControlName="filter" [nxIsMultiselect]="true">
+                  <nx-dropdown-item *ngFor="let style of artworkData[page].styleOptions" [nxValue]="style.value">
+                    {{ style.label }}
+                  </nx-dropdown-item>
+                </nx-dropdown>
+              </nx-formfield>
+            </div>
+          </div>
+        </div>
+        <div nxCol="12,12,4">
+          <div nxRow class="nx-margin-bottom-2xs">
+            <div nxCol="12">
+              <h4 nxHeadline="subsection-xsmall" class="nx-font-weight-semibold">
+                Sort by:
+              </h4>
+            </div>
+          </div>
+          <div nxRow nxRowJustify="center" class="nx-margin-bottom-s">
+            <div nxCol="12">
+              <nx-formfield>
+                <nx-dropdown formControlName="sortType">
+                  <nx-dropdown-item nxValue="default">
+                    Default
+                  </nx-dropdown-item>
+                  <nx-dropdown-item nxValue="title">
+                    Name
+                  </nx-dropdown-item>
+                  <nx-dropdown-item nxValue="artist_title">
+                    Artist
+                  </nx-dropdown-item>
+                  <nx-dropdown-item nxValue="date_start">
+                    Date
+                  </nx-dropdown-item>
+                </nx-dropdown>
+              </nx-formfield>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  
+    <div nxRow nxRowJustify="center,center,start" *ngIf="artworkData[page]">
+      <div nxCol="11,11,4,3" *ngFor="let item of artworkList" class="nx-margin-bottom-2m">
+        <app-artwork-item [item]="item"></app-artwork-item>
+      </div>
+    </div>
+    <div nxRow nxRowJustify="center" class="nx-margin-top-2m">
+      <nx-pagination
+        [nxCount]="pagination?.total"
+        [nxPage]="page"
+        [nxPerPage]="pagination?.limit"
+        nxType="advanced"
+        (nxGoPrev)="changePage('BACK')"
+        (nxGoNext)="changePage('NEXT')"
+        (nxGoPage)="changePage($event)">
+      </nx-pagination>
+    </div>
+    <app-spinner-overlay *ngIf="isLoading"></app-spinner-overlay>
+  </div>

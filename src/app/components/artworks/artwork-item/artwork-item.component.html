@@ -1,0 +1,32 @@
+<nx-card class="card">
+  <div class="image-container">
+    <!-- Binding Angular event will lead to infinite loop if fallback img doesn't exist, thus js is applied instead -->
+    <img [src]="image" [alt]="item.title" class="image"
+      onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/3/32/Art_Institute_of_Chicago_logo.svg';this.onerror='';" />
+  </div>
+
+  <div class="content nx-margin-top-m">
+    <nx-card-header class="nx-margin-bottom-s">
+      <h3 nxHeadline="subsection-small" class="nx-font-weight-bold">
+        {{ item.title }}
+      </h3>
+    </nx-card-header>
+    <p nxCopytext="large" class="nx-font-weight-bold">
+      {{ item.artist_title }}
+    </p>
+    <p nxCopytext="normal" class="nx-font-weight-light">
+      {{ item.place_of_origin }}
+      <ng-container *ngIf="item.date_start && item.date_end && item.date_start !== item.date_end; else singleDate">
+        ({{ item.date_start }} - {{ item.date_end }})
+      </ng-container>
+      <ng-template #singleDate>
+        <ng-container *ngIf="item.date_start || item.date_end">
+          ({{ item.date_start || item.date_end }})
+        </ng-container>
+      </ng-template>
+    </p>
+    <p nxCopytext="normal" class="nx-font-weight-light">
+      {{ item.medium_display }}
+    </p>
+  </div>
+</nx-card>
